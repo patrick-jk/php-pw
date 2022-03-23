@@ -1,5 +1,26 @@
 <?php
  
+ error_reporting(E_ERROR | E_PARSE);
+
+ $id = $_POST['id'];
+ $name = $_POST['name'];
+ $realName = $_POST['realName'];
+ $rating = $_POST['rating'];
+ $teamAffiliation = $_POST['teamAffiliation'];
+ 
+ $dbOperation = new DbOperation();
+ 
+ if (isset($_POST['add_hero'])) {
+	 $id = 0;
+	 $dbOperation->createHero($name, $realName, $rating, $teamAffiliation);
+ } elseif (isset($_POST['update_hero'])) {
+	 $dbOperation->updateHero($id, $name, $realName, $rating, $teamAffiliation);
+ } elseif (isset($_POST['delete_hero'])) {
+	 $dbOperation->deleteHero($id);
+ } else {
+	 echo("Invalid option");
+ }
+
 class DbOperation
 {
     

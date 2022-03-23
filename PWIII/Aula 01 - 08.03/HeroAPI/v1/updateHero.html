@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD - Update</title>
+</head>
+<style>
+    body {
+        background-image: url('https://www.desktopbackground.org/download/o/2014/12/25/876658_super-heroes-wallpapers-wallpapers-cave_1600x900_h.jpg');
+    }
+    h1 {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        text-align: center;
+        color: white;
+        text-shadow: 20px 20px 20px black;
+    }
+    div {
+        justify-content: center;
+        display: flex;
+        margin: 8px 4px;
+    }
+    label {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 16px;
+        color: white;
+    }
+</style>
+<body>
+    <div>
+    <form action="http://localhost/php-pw/PWIII/Aula%2001%20-%2008.03/HeroAPI/includes/DbOperation.php" method="post">
+        <label for="id">ID:</label><br>
+        <input type="number" id="id" name="id"><br>
+
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name"><br>
+
+        <label for="realName">Real name:</label><br>
+        <input type="text" id="realName" name="realName"><br>
+
+        <label for="rating">Rating:</label><br>
+        <input type="number" id="rating" name="rating"><br>
+
+        <label for="teamAffiliation">Team affiliation:</label><br>
+        <input type="text" id="teamAffiliation" name="teamAffiliation"><br><br>
+
+        <input type="submit" name="update_hero" value="Alterar">
+    </form>
+    </div>
+</body>
+</html>
