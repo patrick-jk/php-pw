@@ -35,15 +35,19 @@ if(isset($_GET['crud'])) {
 
         case 'createcontact':
 
-            isTheseParametersAvailable(array('nome','email'));
-            
-            $result = $db->createContact(
-                $_POST['nome'],
-                $_POST['email']
-            );
-            
+            $jsonData = '{"contacts": '.
+                '[{"nome":"Junior", "email": "junior@hotmail.com"},'.
+                '{"nome":"Lucas", "email": "lucas@hotmail.com"},'.
+                '{"nome":"William", "email": "william@hotmail.com"}'.
+                '{"nome":"Venilton", "email": "venilton@hotmail.com"}'.
+                '{"nome":"Jether", "email": "jether@hotmail.com"}'.
+                ']}';
 
-        
+            $data = json_decode($jsonData, true);
+            $contatos = $data->contacts;
+            
+            $result = $db->createContact($_POST['$contatos->nome'], $_POST['$contatos->email']);
+
             if($result){
                 
                 $response['error'] = false; 
