@@ -35,18 +35,14 @@ if(isset($_GET['crud'])) {
 
         case 'createcontact':
 
-            $jsonData = '{"contacts": '.
-                '[{"nome":"Junior", "email": "junior@hotmail.com"},'.
-                '{"nome":"Lucas", "email": "lucas@hotmail.com"},'.
-                '{"nome":"William", "email": "william@hotmail.com"}'.
-                '{"nome":"Venilton", "email": "venilton@hotmail.com"}'.
-                '{"nome":"Jether", "email": "jether@hotmail.com"}'.
-                ']}';
+            $data = json_decode(file_get_contents("php://input"));
+            foreach ($data as $contato) {
+                $db->nome = $contato->nome;
+                $db->email = $contato->email;
+                $result = $db->createContact();
+            }
+        
 
-            $data = json_decode($jsonData, true);
-            $contatos = $data->contacts;
-            
-            $result = $db->createContact($_POST['$contatos->nome'], $_POST['$contatos->email']);
 
             if($result){
                 
@@ -78,12 +74,15 @@ if(isset($_GET['crud'])) {
         
     
         case 'updatecontact':
-            isTheseParametersAvailable(array('nome','email','oldemail'));
-            $result = $db->updateContact(
-                $_POST['nome'],
-                $_POST['email'],
-                $_POST['oldemail']
-            );
+
+            $data = json_decode(file_get_contents("php://input"));
+            $oldemail = "";
+            foreach ($data as $contato) {
+                $db->nome = $contato->nome;
+                $db->email = $contato->email;
+                $oldemail = $contato->oldemail;
+                $result = $db->updateContact($oldemail);
+            }
             
             if($result){
                 $response['error'] = false; 
@@ -124,6 +123,8 @@ echo json_encode($response);
 class CRUD {
 
     private $con;
+    public $nome;
+    public $email;
  
  
     function __construct()
@@ -154,17 +155,17 @@ class CRUD {
 		return $contacts; 
 	}
 
-    function createContact($nome, $email){
+    function createContact(){
 		$stmt = $this->con->prepare("INSERT INTO tbContatos VALUES (?, ?)");
-		$stmt->bind_param("ss", $nome, $email);
+		$stmt->bind_param("ss", $this->nome, $this->email);
 		if($stmt->execute())
 			return true; 			
 		return false;
 	}
 
-    function updateContact($nome, $email, $oldemail){
-		$stmt = $this->con->prepare("UPDATE tbContatos SET name = ?, email = ? WHERE email = ?");
-		$stmt->bind_param("ss", $nome, $email, $oldemail);
+    function updateContact($oldemail){
+		$stmt = $this->con->prepare("UPDATE tbContatos SET nome = ?, email = ? WHERE email = ?");
+		$stmt->bind_param("sss", $this->nome, $this->email, $oldemail);
 		if($stmt->execute())
 			return true; 
 		return false; 
